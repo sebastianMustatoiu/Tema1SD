@@ -84,18 +84,18 @@ void RadixSort(long long nr, vector<long long> &v, int baza)
 
 void merge_sort(vector<long long> &v, long long stanga, long long mijloc, long long dreapta)
 {
-    int n1 =mijloc  - stanga + 1;
-    int n2 = dreapta - mijloc;
+    long long n1 =mijloc  - stanga + 1;
+    long long n2 = dreapta - mijloc;
 
-    int L[n1];
-    int M[n2];
+    long long L[n1];
+    long long M[n2];
 
-    for (int i = 0; i < n1; i++)
+    for (long long i = 0; i < n1; i++)
         L[i] = v[stanga + i];
-    for (int j = 0; j < n2; j++)
+    for (long long j = 0; j < n2; j++)
         M[j] = v[mijloc + 1 + j];
 
-    int i, j, k;
+    long long i, j, k;
     i = 0;
     j = 0;
     k = stanga;
@@ -128,7 +128,7 @@ void merge_sort(vector<long long> &v, long long stanga, long long mijloc, long l
 void MergeSort(vector<long long> &v, long long stg, long long dr)
 {
     if(stg<dr){
-        int mij = stg + (dr - stg) / 2;
+        long long mij = stg + (dr - stg) / 2;
 
         MergeSort(v, stg, mij);
         MergeSort(v, mij + 1, dr);
@@ -171,9 +171,9 @@ void BubbleSort(long long nr, vector<long long> &v)
 }
 
 void heapify(vector<long long> &v, long long nr, int i) {
-    int maxx = i;
-    int stanga = 2 * i + 1;
-    int dreapta = 2 * i + 2;
+    long long maxx = i;
+    long long stanga = 2 * i + 1;
+    long long dreapta = 2 * i + 2;
 
     if (stanga < nr && v[stanga] > v[maxx])
         maxx = stanga;
@@ -187,12 +187,12 @@ void heapify(vector<long long> &v, long long nr, int i) {
     }
 }
 
-void HeapSort(vector<long long> &v, int nr) {
+void HeapSort(vector<long long> &v, long long nr) {
 
-    for (int i = nr / 2 - 1; i >= 0; i--)
+    for (long long i = nr / 2 - 1; i >= 0; i--)
         heapify(v, nr, i);
 
-    for (int i = nr - 1; i >= 0; i--) {
+    for (long long i = nr - 1; i >= 0; i--) {
         swap(v[0], v[i]);
 
         heapify(v, i, 0);
@@ -220,7 +220,7 @@ int main()
         generare_random(nr_numere, v2, valmax);
 
         v=v2;
-        cout<<"RadixSort : ";
+        cout<<"RadixSort baza 2: ";
         auto start = std::chrono::high_resolution_clock::now();
         RadixSort(nr_numere, v, 2);
         auto stop = std::chrono::high_resolution_clock::now();
@@ -232,15 +232,38 @@ int main()
 
 
         v=v2;
-        cout<<"MergeSort : ";
+        cout<<"RadixSort baza 32: ";
         start = std::chrono::high_resolution_clock::now();
-        MergeSort(v, 0, nr_numere-1);
+        RadixSort(nr_numere, v, 32);
         stop = std::chrono::high_resolution_clock::now();
         timp = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
-        if (test_sort(nr_numere, v))
-            cout<<"Sortarea MergeSort a reusit, iar timpul de executie este de "<<timp<<" microsecunde"<<endl;
+        if (test_sort(nr_numere, v)==1)
+            cout<<"Sortarea RadixSort a reusit, iar timpul de executie este de "<<timp<<" microsecunde"<<endl;
         else
             cout<<"Sortarea RadixSort nu a reusit"<<endl;
+            
+            
+        v=v2;
+        cout<<"RadixSort baza 256: ";
+        start = std::chrono::high_resolution_clock::now();
+        RadixSort(nr_numere, v, 256);
+        stop = std::chrono::high_resolution_clock::now();
+        timp = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
+        if (test_sort(nr_numere, v)==1)
+            cout<<"Sortarea RadixSort a reusit, iar timpul de executie este de "<<timp<<" microsecunde"<<endl;
+        else
+            cout<<"Sortarea RadixSort nu a reusit"<<endl;
+            
+         v=v2;
+         cout<<"MergeSort : ";
+         start = std::chrono::high_resolution_clock::now();
+         MergeSort(v, 0, nr_numere-1);
+         stop = std::chrono::high_resolution_clock::now();
+         timp = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
+         if (test_sort(nr_numere, v))
+             cout<<"Sortarea MergeSort a reusit, iar timpul de executie este de "<<timp<<" microsecunde"<<endl;
+         else
+             cout<<"Sortarea RadixSort nu a reusit"<<endl;
 
         v=v2;
         cout<<"ShellSort : ";
